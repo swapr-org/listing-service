@@ -1,4 +1,4 @@
-package app.swapr.listing.photos;
+package app.swapr.listing.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

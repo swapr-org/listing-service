@@ -1,4 +1,4 @@
-package app.swapr.listing.photos;
+package app.swapr.listing.config;
 
 import java.time.Duration;
 import org.springframework.boot.health.contributor.Health;
