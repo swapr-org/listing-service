@@ -20,7 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import software.amazon.awssdk.core.exception.SdkClientException;
-import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.HeadBucketRequest;
 import software.amazon.awssdk.services.s3.model.NoSuchBucketException;
@@ -59,7 +58,7 @@ class ListingServiceApplicationTest {
 
   @ParameterizedTest
   @MethodSource("bucketFailures")
-  void reportsDownWhenPhotoBucketCannotBeReached(SdkException failure) {
+  void reportsDownWhenPhotoBucketCannotBeReached(RuntimeException failure) {
     when(s3.headBucket(any(HeadBucketRequest.class))).thenThrow(failure);
 
     HealthDescriptor result = health.health();
@@ -98,10 +97,11 @@ class ListingServiceApplicationTest {
     assertThatThrownBy(app::run).rootCause().hasMessageContaining(emptySetting);
   }
 
-  static Stream<SdkException> bucketFailures() {
+  static Stream<RuntimeException> bucketFailures() {
     return Stream.of(
         NoSuchBucketException.builder().statusCode(404).message("Not Found").build(),
         S3Exception.builder().statusCode(403).message("Forbidden").build(),
-        SdkClientException.create("Unable to execute HTTP request"));
+        SdkClientException.create("Unable to execute HTTP request"),
+        new NullPointerException("Access key ID cannot be blank."));
   }
 }

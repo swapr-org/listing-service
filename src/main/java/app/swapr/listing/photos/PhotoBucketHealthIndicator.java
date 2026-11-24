@@ -3,7 +3,6 @@ package app.swapr.listing.photos;
 import java.time.Duration;
 import org.springframework.boot.health.contributor.Health;
 import org.springframework.boot.health.contributor.HealthIndicator;
-import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.HeadBucketRequest;
 
@@ -27,7 +26,7 @@ class PhotoBucketHealthIndicator implements HealthIndicator {
     try {
       s3.headBucket(request);
       return Health.up().build();
-    } catch (SdkException e) {
+    } catch (RuntimeException e) {
       return Health.down(e).build();
     }
   }
