@@ -50,3 +50,8 @@ management:
 swapr:
   internal-token: ${INTERNAL_TOKEN:}
   cors-allowed-origins: ${CORS_ALLOWED_ORIGINS:}
+  photos:
+    bucket: ${PHOTO_BUCKET:}
+    region: ${AWS_REGION:}
+    access-key-id: ${AWS_ACCESS_KEY_ID:}
+    secret-access-key: ${AWS_SECRET_ACCESS_KEY:}
